@@ -1,6 +1,6 @@
 #Log parsing
-
-*Write a script that reads stdin line by line and computes metrics:
+---
+Write a script that reads stdin line by line and computes metrics:
 ---
 1. Input format: <IP Address> - [<date>] "GET /projects/260 HTTP/1.1" <status code> <file size> (if the format is not this one, the line must be skipped)
 2. After every 10 lines and/or a keyboard interruption (CTRL + C), print these statistics from the beginning:
@@ -12,9 +12,10 @@
     .format: <status code>: <number>
     .status codes should be printed in ascending order
 
-`Warning: In this sample, you will have random value - it’s normal to not have the same output as this one.`
+🚨Warning: In this sample, you will have random value - it’s normal to not have the same output as this one.🚨
 ---
 #Output must look like
+---
 > File size: 5213
 200: 2
 401: 1
