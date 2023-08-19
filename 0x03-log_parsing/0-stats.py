@@ -1,54 +1,88 @@
-#!/usr/bin/env python3
-"""
-Log parsing interview
-"""
-import sys
-import signal
+#!/usr/bin/python3
+'''Log parsing HTTP request logs.
+'''
+import re
 
-class MetricsCalculator:
-    def __init__(self):
-        """ Initialize metric"""
-        self.total_size = 0
-        self.status_counts = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
-        self.line_count = 0
 
-    def handle_line(self, line):
-        """Handle line"""
-        parts = line.split()
-        if len(parts) != 10:
-            return False
+def extract_input(input_line):
+    '''Extracts sections of a line of an HTTP request log.
+    '''
+    fp = (
+        r'\s*(?P<ip>\S+)\s*',
+        r'\s*\[(?P<date>\d+\-\d+\-\d+ \d+:\d+:\d+\.\d+)\]',
+        r'\s*"(?P<request>[^"]*)"\s*',
+        r'\s*(?P<status_code>\S+)',
+        r'\s*(?P<file_size>\d+)'
+    )
+    info = {
+        'status_code': 0,
+        'file_size': 0,
+    }
+    log_fmt = '{}\\-{}{}{}{}\\s*'.format(fp[0], fp[1], fp[2], fp[3], fp[4])
+    response_match = re.fullmatch(log_fmt, input_line)
+    if response_match is not None:
+        status_code = response_match.group('status_code')
+        file_size = int(response_match.group('file_size'))
+        info['status_code'] = status_code
+        info['file_size'] = file_size
+    return info
 
-        try:
-            status_code = int(parts[8])
-            file_size = int(parts[9])
-        except ValueError:
-            return False
 
-        self.total_size += file_size
-        if status_code in self.status_counts:
-            self.status_counts[status_code] += 1
+def print_statistics(total_file_size, status_codes_stats):
+    '''Prints log from the accumulated statistics of the HTTP request log.
+    '''
+    print('File size: {:d}'.format(total_file_size), flush=True)
+    for status_code in sorted(status_codes_stats.keys()):
+        num = status_codes_stats.get(status_code, 0)
+        if num > 0:
+            print('{:s}: {:d}'.format(status_code, num), flush=True)
 
-        self.line_count += 1
-        return True
 
-    def print_metrics(self):
-        """ Function to print metric """
-        print(f"File size: {self.total_size}")
-        for status_code in sorted(self.status_counts.keys()):
-            if self.status_counts[status_code] > 0:
-                print(f"{status_code}: {self.status_counts[status_code]}")
-        print()  # Print an empty line after each set of metrics
+def update_metrics(line, total_file_size, status_codes_stats):
+    '''Updates the metrics from a given HTTP request log.
 
-def main():
-    """ Check """
-    calculator = MetricsCalculator()
+    Args:
+        line (str): The line of input from which to retrieve the metrics.
+
+    Returns:
+        int: The new total file size.
+    '''
+    line_info = extract_input(line)
+    status_code = line_info.get('status_code', '0')
+    if status_code in status_codes_stats.keys():
+        status_codes_stats[status_code] += 1
+    return total_file_size + line_info['file_size']
+
+
+def run():
+    '''Start the log parser.
+    '''
+    line_num = 0
+    total_file_size = 0
+    status_codes_stats = {
+        '200': 0,
+        '301': 0,
+        '400': 0,
+        '401': 0,
+        '403': 0,
+        '404': 0,
+        '405': 0,
+        '500': 0,
+    }
     try:
-        for line in sys.stdin:
-            if calculator.handle_line(line):
-                if calculator.line_count % 10 == 0:
-                    calculator.print_metrics()
-    except KeyboardInterrupt:
-        calculator.print_metrics()
+        while True:
+            line = input()
+            total_file_size = update_metrics(
+                line,
+                total_file_size,
+                status_codes_stats,
+            )
+            line_num += 1
+            if line_num % 10 == 0:
+                print_statistics(total_file_size, status_codes_stats)
+    except (KeyboardInterrupt, EOFError):
+        print_statistics(total_file_size, status_codes_stats)
 
-if __name__ == "__main__":
-    main()
+
+if __name__ == '__main__':
+    run()
