@@ -8,12 +8,12 @@ Follow these step to execute the program:
 
 ### Write a method that determines if a given data set represents a valid UTF-8 encoding.
 
-0️⃣ Prototype: def validUTF8(data) <br/>
-1️⃣ Return: True if data is a valid UTF-8 encoding, else return False<br/>
-2️⃣ A character in UTF-8 can be 1 to 4 bytes long<br/>
-3️⃣ The data set can contain multiple characters<br/>
-4️⃣ The data will be represented by a list of integers<br/>
-5️⃣ Each integer represents 1 byte of data, therefore you<br/> only need to handle the 8 least significant bits of each integer<br/>
+0️⃣  Prototype: def validUTF8(data) <br/>
+1️⃣  Return: True if data is a valid UTF-8 encoding, else return False<br/>
+2️⃣  A character in UTF-8 can be 1 to 4 bytes long<br/>
+3️⃣  The data set can contain multiple characters<br/>
+4️⃣  The data will be represented by a list of integers<br/>
+5️⃣  Each integer represents 1 byte of data, therefore you<br/> only need to handle the 8 least significant bits of each integer<br/>
 
 ```sh
 $ cat main_0.py
@@ -34,5 +34,5 @@ data = [229, 65, 127, 256]
 print(validUTF8(data))
 ```
 ---
-🥳0️⃣1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣8️⃣9️⃣🔟
+🥳0️⃣ 1️⃣ 2️⃣ 3️⃣ 4️⃣ 5️⃣ 6️⃣ 7️⃣ 8️⃣ 9️⃣ 🔟
 
