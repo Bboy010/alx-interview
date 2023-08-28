@@ -34,3 +34,4 @@ def validUTF8(data):
 
     # All bytes and continuation bytes matched
     return remaining_bytes == 0
+
