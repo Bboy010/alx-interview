@@ -10,7 +10,7 @@ def validUTF8(data):
         # Check if the most significant bit is 0 (ASCII character)
         if num >> 7 == 0:
             if remaining_bytes > 0:
-                return False  # Continuation byte expecte
+                return False  # Continuation byte expected
         else:
             if remaining_bytes == 0:
                 # Determine the number of bytes in the current character
@@ -34,4 +34,3 @@ def validUTF8(data):
 
     # All bytes and continuation bytes matched
     return remaining_bytes == 0
-
