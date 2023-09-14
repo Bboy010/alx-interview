@@ -1,4 +1,4 @@
-#!/bin/usr/env python3
+#!/usr/bin/python3
 """ Rotation 2D interview"""
 
 def rotate_2d_matrix(matrix):
