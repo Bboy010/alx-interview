@@ -8,7 +8,7 @@
 6. [Nqueens](./0x05-nqueens)
 7. [Star Wars api](./0x06-starwars_api)
 8. [Rotate 2D matrix](./0x07-rotate_2d_matrix)
-
+9. [Making Change](./0x08-making_change)
 
 
 ---
