@@ -3,6 +3,17 @@
 
 
 def island_perimeter(grid):
+    """
+    Calculate the perimeter of an island represented
+    by a binary grid.
+
+    Args:
+        grid (List[List[int]]): A 2D grid where
+        1 represents land and 0 represents water.
+
+    Returns:
+        int: The perimeter of the island.
+    """
     perimeter = 0
 
     for i in range(len(grid)):
