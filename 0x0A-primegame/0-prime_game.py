@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 def isWinner(x, nums):
+    """ Definition of Winner """
     def isPrime(num):
         if num < 2:
             return False
@@ -10,6 +11,7 @@ def isWinner(x, nums):
         return True
 
     def canWin(n):
+        """ Define possibility to win"""
         if n == 1:
             return False
         if n in memo:
@@ -34,9 +36,9 @@ def isWinner(x, nums):
         else:
             ben_wins += 1
 
-    if maria_wins > ben_wins:
+    if ben_wins > maria_wins:
         return "Maria"
-    elif ben_wins > maria_wins:
+    elif maria_wins > ben_wins:
         return "Ben"
     else:
         return None
