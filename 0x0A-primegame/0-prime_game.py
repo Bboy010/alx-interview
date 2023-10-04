@@ -1,45 +1,44 @@
-#!/usr/bin/python3
-
 def isWinner(x, nums):
-    """ Definition of Winner """
-    def isPrime(num):
-        if num < 2:
-            return False
-        for i in range(2, int(num ** 0.5) + 1):
-            if num % i == 0:
-                return False
-        return True
+    def sieve(n):
+        # Sieve of Eratosthenes to generate prime numbers up to n
+        is_prime = [True] * (n + 1)
+        is_prime[0] = is_prime[1] = False
+        primes = []
+        for p in range(2, n + 1):
+            if is_prime[p]:
+                primes.append(p)
+                for i in range(p * p, n + 1, p):
+                    is_prime[i] = False
+        return primes
 
-    def canWin(n):
-        """ Define possibility to win"""
+    def canWin(n, primes):
+        # Dynamic programming to check if the current player can win for a given n
         if n == 1:
-            return False
-        if n in memo:
-            return memo[n]
+            return False  # Maria cannot make a move, so she loses
 
-        for i in range(2, n + 1):
-            if isPrime(i) and n % i == 0:
-                if not canWin(n - i):
-                    memo[n] = True
-                    return True
-
-        memo[n] = False
+        for prime in primes:
+            if prime > n:
+                break
+            if not canWin(n - prime, primes):
+                return True  # If there's a move leading to the opponent's loss, Maria wins
         return False
 
-    memo = {}
+    # Initialize the list of prime numbers up to the maximum n
+    max_n = max(nums)
+    primes = sieve(max_n)
+
     maria_wins = 0
     ben_wins = 0
 
     for n in nums:
-        if canWin(n):
+        if canWin(n, primes):
             maria_wins += 1
         else:
             ben_wins += 1
 
-    if ben_wins > maria_wins:
+    if maria_wins > ben_wins:
         return "Maria"
-    elif maria_wins > ben_wins:
+    elif maria_wins < ben_wins:
         return "Ben"
     else:
         return None
-
