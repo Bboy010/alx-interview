@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 def isWinner(x, nums):
     def sieve(n):
         # Sieve of Eratosthenes to generate prime numbers up to n
