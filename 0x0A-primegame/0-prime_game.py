@@ -1,4 +1,8 @@
 #!/usr/bin/python3
+"""
+Display the name of the winner
+"""
+
 
 def isWinner(x, nums):
     """
